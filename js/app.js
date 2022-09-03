@@ -4,7 +4,6 @@ const loadAllProduct = async () => {
         const res = await fetch(url);
         const data = await res.json();
         return data.data.news_category;
-        // console.log(data.data.news_category);
     } catch (error) {
         console.log(error);
     }
@@ -13,7 +12,6 @@ const loadAllProduct = async () => {
 
 const setAllCategory = async () => {
     const data = await loadAllProduct()
-    // console.log(data);
 
     const allCategory = document.getElementById('all-category');
 
@@ -54,19 +52,19 @@ const loadAllNews = async category_id => {
     toggleSpinner(true);
 
     const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
-    // console.log(category_id);
+
     const res = await fetch(url);
     const data = await res.json();
     displayNewItem(data.data);
-    // return (data.data);
 }
 
 const displayNewItem = newsAll => {
-    console.log('newsAll', newsAll);
+    // console.log('newsAll', newsAll);
 
-
-    const totalLength = newsAll.length;
-    console.log(totalLength);
+    //Sort in array
+    newsAll.sort((a, b) => {
+        return b.total_view - a.total_view;
+    });
 
     const totalNewsCount = document.getElementById('total-news-count').innerHTML = `${newsAll.length} items found for category`;
 
@@ -79,11 +77,12 @@ const displayNewItem = newsAll => {
         noNewsGategory.classList.add('d-none');
     }
 
+
     //All new Show
     const newsContainer = document.getElementById('news-container');
     newsContainer.textContent = '';
     newsAll.forEach(news => {
-        // console.log('news', news);
+
 
         const div = document.createElement('div');
         div.innerHTML = `
@@ -128,7 +127,7 @@ const displayNewItem = newsAll => {
         newsContainer.appendChild(div);
     })
 
-    //Spinner Stop
+    //Spinner stop
     toggleSpinner(false);
 
 }
@@ -137,12 +136,10 @@ const loadNewsDetails = async news_id => {
     const url = `https://openapi.programming-hero.com/api/news/${news_id}`;
     const res = await fetch(url);
     const data = await res.json();
-    // console.log(data.data[0].title);
     displayNewsDetails(data.data[0]);
 }
 
 const displayNewsDetails = newsDetails => {
-    // console.log(newsDetails.title);
     const modalTitle = document.getElementById('detailsModalTitle');
     modalTitle.innerText = newsDetails.title;
 
@@ -151,7 +148,7 @@ const displayNewsDetails = newsDetails => {
     <div class="card" >
     <img src="${newsDetails.thumbnail_url}" class="card-img-top" alt="...">
     <div class="card-body">
-    <p class="card-text">${newsDetails.details.length > 200 ? newsDetails.details.slice(0, 200) + '...' : newsDetails.details}</p>
+    <p class="card-text">${newsDetails.details}</p>
     </div>
     </div>
     
@@ -173,24 +170,7 @@ const displayNewsDetails = newsDetails => {
             </div>
         </div>
     `;
-    // console.log(newsDetails);
-    // console.log(newsDetails.thumbnail_url);
 }
 
-// const displayNewItem = async () => {
-//     const data = await loadAllNews()
-//     console.log(loadAllNews())
-//     const newsDetails = document.getElementById('news-container');
-
-//     // newsDetails.forEach(news => {
-//     //     console.log('jjj', news)
-//     //     const newsDiv = document.createElement('div');
-//     //     newsDetails.innerHTML = `
-//     //     <h1>AMi tomake valobasi</h1>
-//     //     `;
-//     //     newsDetails.appendChild(newsDiv);
-//     // })
-
-// }
 
 // loadAllNews();
