@@ -50,6 +50,16 @@ const loadAllNews = async category_id => {
 const displayNewItem = newsAll => {
     console.log('newsAll', newsAll);
 
+    //no-news-gategory
+    const noNewsGategory = document.getElementById('no-news-gategory');
+    if (newsAll.length === 0) {
+        noNewsGategory.classList.remove('d-none');
+    }
+    else {
+        noNewsGategory.classList.add('d-none');
+    }
+
+    //All new Show
     const newsDetails = document.getElementById('news-container');
     newsDetails.textContent = '';
     newsAll.forEach(news => {
@@ -109,4 +119,4 @@ const displayNewItem = newsAll => {
 
 // }
 
-loadAllNews();
+// loadAllNews();
