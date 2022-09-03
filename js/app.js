@@ -55,10 +55,10 @@ const loadAllNews = async category_id => {
 
     const res = await fetch(url);
     const data = await res.json();
-    displayNewItem(data.data);
+    displayNewsItem(data.data);
 }
 
-const displayNewItem = newsAll => {
+const displayNewsItem = newsAll => {
     // console.log('newsAll', newsAll);
 
     //Sort in array
