@@ -40,7 +40,7 @@ setAllCategory();
 
 const loadAllNews = async category_id => {
     const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
-    console.log(category_id);
+    // console.log(category_id);
     const res = await fetch(url);
     const data = await res.json();
     displayNewItem(data.data);
@@ -49,6 +49,12 @@ const loadAllNews = async category_id => {
 
 const displayNewItem = newsAll => {
     console.log('newsAll', newsAll);
+
+
+    const totalLength = newsAll.length;
+    console.log(totalLength);
+
+    const totalNewsCount = document.getElementById('total-news-count').innerHTML = `${newsAll.length} items found for category`;
 
     //no-news-gategory
     const noNewsGategory = document.getElementById('no-news-gategory');
@@ -63,7 +69,7 @@ const displayNewItem = newsAll => {
     const newsContainer = document.getElementById('news-container');
     newsContainer.textContent = '';
     newsAll.forEach(news => {
-        console.log('news', news);
+        // console.log('news', news);
 
         const div = document.createElement('div');
         div.innerHTML = `
@@ -119,7 +125,7 @@ const loadNewsDetails = async news_id => {
 }
 
 const displayNewsDetails = newsDetails => {
-    console.log(newsDetails.title);
+    // console.log(newsDetails.title);
     const modalTitle = document.getElementById('detailsModalTitle');
     modalTitle.innerText = newsDetails.title;
 
@@ -132,9 +138,26 @@ const displayNewsDetails = newsDetails => {
     </div>
     </div>
     
+
+    <div class="mb-3 mt-5" >
+            <div class="d-flex justify-content-between row g-0">
+                <div class="col-md-2">
+                    <img src="${newsDetails.author.img ? newsDetails.author.img : 'Author Image not found'}" style="width: 50px; height: 50px;" class="rounded-circle" alt="...">
+                </div>
+                <div class="col-md-6">
+                    <h5 class="title">${newsDetails.author.name ? newsDetails.author.name : 'Author is not found'}</h5>
+                    <p class="text">${newsDetails.author.published_date ? newsDetails.author.published_date : 'Author Published date not found'}</p>
+
+                </div>
+
+                <div class="col-md-4">
+                    <h5 class="title"><i class="fa-regular fa-eye"></i> ${newsDetails.total_view ? newsDetails.total_view : 'View is not found'}</h5>
+                </div>
+            </div>
+        </div>
     `;
-    console.log(newsDetails);
-    console.log(newsDetails.thumbnail_url);
+    // console.log(newsDetails);
+    // console.log(newsDetails.thumbnail_url);
 }
 
 // const displayNewItem = async () => {
