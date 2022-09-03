@@ -60,8 +60,8 @@ const displayNewItem = newsAll => {
     }
 
     //All new Show
-    const newsDetails = document.getElementById('news-container');
-    newsDetails.textContent = '';
+    const newsContainer = document.getElementById('news-container');
+    newsContainer.textContent = '';
     newsAll.forEach(news => {
         console.log('news', news);
 
@@ -74,33 +74,67 @@ const displayNewItem = newsAll => {
         </div>
         <div class="col-md-8">
          <div class="card-body">
-         <h5 class="card-title">${news.title}</h5>
+         <h5 class="card-title">${news.title ? news.title : 'Title not found'}</h5>
          <p class="card-text">${news.details.length > 300 ? news.details.slice(0, 300) + '...' : news.details}</p>
 
 
-         <div class="mb-3" style="max-width: 340px;">
-            <div class=" row g-0">
-                <div class="col-md-4">
+        
+         <div class="mb-3 mt-5" >
+            <div class="d-flex justify-content-between row g-0">
+                <div class="col-md-2">
                     <img src="${news.author.img ? news.author.img : 'Author Image not found'}" style="width: 50px; height: 50px;" class="rounded-circle" alt="...">
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <h5 class="title">${news.author.name ? news.author.name : 'Author is not found'}</h5>
                     <p class="text">${news.author.published_date ? news.author.published_date : 'Author Published date not found'}</p>
 
                 </div>
+
+                <div class="col-md-4">
+                    <h5 class="title"><i class="fa-regular fa-eye"></i> ${news.total_view ? news.total_view : 'View is not found'}</h5>
+                </div>
+                <div class="col-md-2">
+                    <h5 onclick="loadNewsDetails('${news._id}')" class="title" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-arrow-right"></i></h5>
+                </div>
             </div>
         </div>
+        
 
-
-         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
       </div>
     </div>
   </div>
 </div>
         `;
-        newsDetails.appendChild(div);
+        newsContainer.appendChild(div);
     })
 
+}
+
+const loadNewsDetails = async news_id => {
+    const url = `https://openapi.programming-hero.com/api/news/${news_id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    // console.log(data.data[0].title);
+    displayNewsDetails(data.data[0]);
+}
+
+const displayNewsDetails = newsDetails => {
+    console.log(newsDetails.title);
+    const modalTitle = document.getElementById('detailsModalTitle');
+    modalTitle.innerText = newsDetails.title;
+
+    const modelDetails = document.getElementById('model-details');
+    modelDetails.innerHTML = `
+    <div class="card" >
+    <img src="${newsDetails.thumbnail_url}" class="card-img-top" alt="...">
+    <div class="card-body">
+    <p class="card-text">${newsDetails.details.length > 200 ? newsDetails.details.slice(0, 200) + '...' : newsDetails.details}</p>
+    </div>
+    </div>
+    
+    `;
+    console.log(newsDetails);
+    console.log(newsDetails.thumbnail_url);
 }
 
 // const displayNewItem = async () => {
